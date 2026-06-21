@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <!--
+         Author: Addison
+         Date: 06/21/2026
+         Purpose: SDC355 Project - GitHub portfolio homepage with HTML structure,
+                  navigation linking to three sections, About/Projects/Contact
+                  content, and JavaScript user interaction using prompt() to
+                  welcome the user by name dynamically.
+      -->
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Addsmi1720 - Portfolio</title>
+      <style>
+         /* Basic reset and body styling */
+         * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+         }
+         body {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.6;
+            background: #f4f4f4;
+            color: #333;
+         }
+
+         /* Navigation bar */
+         nav {
+            background: #1a1a1a;
+            padding: 15px 0;
+            text-align: center;
+         }
+         nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 1.1em;
+            font-weight: bold;
+         }
+         nav a:hover {
+            color: #8B0000;
+         }
+
+         /* Welcome message banner */
+         #welcome-banner {
+            background: #8B0000;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+         }
+
+         /* Section styling */
+         section {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #fff;
+            border-left: 5px solid #8B0000;
+         }
+         section h2 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #8B0000;
+         }
+         section p {
+            margin-bottom: 10px;
+            font-size: 1em;
+         }
+
+         /* Projects section */
+         .project-list {
+            list-style: none;
+            padding: 0;
+         }
+         .project-list li {
+            margin-bottom: 15px;
+         }
+         .project-list a {
+            font-size: 1.1em;
+            color: #8B0000;
+            font-weight: bold;
+            text-decoration: none;
+         }
+         .project-list a:hover {
+            text-decoration: underline;
+         }
+         .project-list p {
+            margin: 4px 0 0 0;
+            font-size: 0.95em;
+            color: #555;
+         }
+
+         /* Contact form */
+         form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 500px;
+         }
+         form label {
+            font-weight: bold;
+         }
+         form input, form textarea {
+            padding: 8px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+         }
+         form textarea {
+            height: 120px;
+            resize: vertical;
+         }
+         form button {
+            background: #8B0000;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            width: fit-content;
+         }
+         form button:hover {
+            background: #1a1a1a;
+            color: #fff;
+         }
+
+         /* Footer */
+         footer {
+            text-align: center;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+            margin-top: 40px;
+         }
+      </style>
+   </head>
+   <body>
+
+      <!-- Navigation menu linking to three sections -->
+      <nav>
+         <a href="#about">About</a>
+         <a href="#projects">Projects</a>
+         <a href="#contact">Contact</a>
+      </nav>
+
+      <!-- Dynamic welcome message populated by JavaScript -->
+      <div id="welcome-banner"></div>
+
+      <!-- About section -->
+      <section id="about">
+         <h2>About</h2>
+         <p>Controls Engineering Technician and AI/ML developer with a background in industrial automation and a focus on building intelligent systems that bridge the plant floor and the intelligence layer.</p>
+         <p>Currently pursuing a BS in Information Technology with a concentration in AI/ML and Data Analytics.</p>
+      </section>
+
+      <!-- Projects section with links to three GitHub repos -->
+      <section id="projects">
+         <h2>Projects</h2>
+         <ul class="project-list">
+            <li>
+               <a href="https://github.com/AddisonTech/Argus" target="_blank">Argus</a>
+               <p>Computer vision project focused on intelligent visual inspection systems.</p>
+            </li>
+            <li>
+               <a href="https://github.com/AddisonTech/Smith_Agentic" target="_blank">Smith_Agentic</a>
+               <p>Agentic AI system built for autonomous task execution and decision-making.</p>
+            </li>
+            <li>
+               <a href="https://github.com/AddisonTech/Vision_Inspect" target="_blank">Vision_Inspect</a>
+               <p>MCP server integration project for real-time visual inspection workflows.</p>
+            </li>
+         </ul>
+      </section>
+
+      <!-- Contact section with email form -->
+      <section id="contact">
+         <h2>Contact</h2>
+         <form>
+            <label for="sender-name">Name</label>
+            <input type="text" id="sender-name" placeholder="Your name" />
+
+            <label for="sender-email">Email Address</label>
+            <input type="email" id="sender-email" placeholder="your@email.com" />
+
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" placeholder="Subject" />
+
+            <label for="message">Message</label>
+            <textarea id="message" placeholder="Your message here..."></textarea>
+
+            <button type="submit">Send Message</button>
+         </form>
+      </section>
+
+      <footer>
+         <p>Addsmi1720 | SDC355 Portfolio Project</p>
+      </footer>
+
+      <script>
+         // Prompt the user for their name and store it in a variable
+         var userName = prompt("What is your name?");
+
+         // Dynamically update the welcome banner at the top of the page
+         document.getElementById("welcome-banner").innerText = "Welcome, " + userName + "!";
+      </script>
+
+   </body>
+</html>
