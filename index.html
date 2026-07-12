@@ -3,12 +3,15 @@
    <head>
       <!--
          Author: Addison Smith
-         Date: 06/28/2026
+         Date: 07/12/2026
          Purpose: SDC355 Project - GitHub portfolio homepage with HTML structure,
                   navigation linking to three sections, About/Projects/Contact
                   content, JavaScript user interaction, conditional logic for
                   Featured Content, a skills loop, dark mode toggle, and
                   form submit event listener.
+                  Week 3 update: dynamically created DOM elements, selector-based
+                  content/style updates, and a timed confirmation message for
+                  the Contact Form submission.
       -->
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -218,6 +221,21 @@
             color: #fff;
          }
 
+         /* Week 3: status message shown during/after form submission */
+         #form-status {
+            font-weight: bold;
+            margin-top: 5px;
+         }
+
+         /* Week 3: highlight box for the dynamically added project paragraph */
+         #project-highlight {
+            background: #f9f9f9;
+            border-left: 3px solid #8B0000;
+            padding: 10px;
+            margin-top: 15px;
+            font-style: italic;
+         }
+
          /* Footer */
          footer {
             text-align: center;
@@ -276,6 +294,7 @@
                <p>MCP server integration project for real-time visual inspection workflows.</p>
             </li>
          </ul>
+         <!-- Week 3: dynamically created paragraph is appended here by JavaScript -->
       </section>
 
       <!-- Featured Content section populated by conditional logic -->
@@ -324,6 +343,9 @@
             <textarea id="message" placeholder="Your message here..."></textarea>
 
             <button type="submit" id="submit-btn">Send Message</button>
+
+            <!-- Week 3: status message element updated dynamically on submit -->
+            <div id="form-status"></div>
          </form>
       </section>
 
@@ -372,16 +394,50 @@
             }
          });
 
-         // Event listener on the contact form submit button
+         // ---------------------------------------------------------
+         // Week 3: Dynamically add a new element to the Projects section
+         // Creates a paragraph introducing a recent project and appends
+         // it using document.createElement() and appendChild().
+         // ---------------------------------------------------------
+         var projectHighlight = document.createElement("p");
+         projectHighlight.id = "project-highlight";
+         projectHighlight.textContent = "Recently added: Argus, a computer vision project focused on building intelligent visual inspection pipelines for industrial automation use cases.";
+         document.getElementById("projects").appendChild(projectHighlight);
+
+         // ---------------------------------------------------------
+         // Week 3: Reference and modify two existing elements using selectors
+         // ---------------------------------------------------------
+
+         // Selector 1: use querySelector to grab the About section heading
+         // and add a bottom border for emphasis
+         var aboutHeading = document.querySelector("#about h2");
+         aboutHeading.style.borderBottom = "2px solid #8B0000";
+         aboutHeading.style.paddingBottom = "5px";
+
+         // Selector 2: use querySelector to grab the footer paragraph
+         // and update its text to include the current year
+         var footerText = document.querySelector("footer p");
+         var currentYear = new Date().getFullYear();
+         footerText.textContent = "Addsmi1720 | SDC355 Portfolio Project | " + currentYear;
+
+         // ---------------------------------------------------------
+         // Week 3: Timed confirmation for Contact Form submission
+         // Prevents default submission, shows a loading message,
+         // then replaces it with a confirmation after 2.5 seconds.
+         // ---------------------------------------------------------
          document.getElementById("submit-btn").addEventListener("click", function(e) {
             // Prevent the form from refreshing the page
             e.preventDefault();
 
-            // Get the name the user entered in the form
-            var senderName = document.getElementById("sender-name").value;
+            var statusBox = document.getElementById("form-status");
 
-            // Display a confirmation alert with the user's name
-            alert("Thank you, " + senderName + ", your message has been sent!");
+            // Display a "sending" message immediately
+            statusBox.textContent = "Sending message...";
+
+            // After a 2.5 second delay, replace it with a confirmation message
+            setTimeout(function() {
+               statusBox.textContent = "Message sent successfully!";
+            }, 2500);
          });
       </script>
 
