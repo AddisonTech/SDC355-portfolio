@@ -12,6 +12,10 @@
                   Week 3 update: dynamically created DOM elements, selector-based
                   content/style updates, and a timed confirmation message for
                   the Contact Form submission.
+                  Week 4 update: replaced the name prompt() with a custom welcome
+                  modal that overlays the page on load, added a hover tooltip to
+                  the Contact Form's Submit button, and persisted the Dark Mode
+                  preference using localStorage so it is remembered across visits.
       -->
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -236,6 +240,75 @@
             font-style: italic;
          }
 
+         /* Week 4: Welcome modal overlay, shown automatically when the page loads */
+         .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+         }
+         .modal-box {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            text-align: center;
+            max-width: 400px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+         }
+         .modal-box p {
+            margin-bottom: 20px;
+            font-size: 1.1em;
+         }
+         .modal-box button {
+            background: #8B0000;
+            color: #fff;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+         }
+         .modal-box button:hover {
+            background: #1a1a1a;
+         }
+         body.dark-mode .modal-box {
+            background: #2a2a2a;
+            color: #f4f4f4;
+         }
+
+         /* Week 4: Tooltip on the Contact Form's Submit button */
+         .tooltip-wrapper {
+            position: relative;
+            display: inline-block;
+            width: fit-content;
+         }
+         .tooltip-text {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a1a;
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            white-space: nowrap;
+            z-index: 10;
+         }
+         .tooltip-wrapper:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+         }
+
          /* Footer */
          footer {
             text-align: center;
@@ -247,6 +320,14 @@
       </style>
    </head>
    <body>
+
+      <!-- Week 4: Welcome modal, appears automatically on page load and is dismissed with the Close button -->
+      <div id="welcome-modal" class="modal-overlay">
+         <div class="modal-box">
+            <p>This page is a work in progress.</p>
+            <button id="modal-close-btn">Close</button>
+         </div>
+      </div>
 
       <!-- Dark mode toggle at top of page -->
       <div id="dark-mode-bar">
@@ -264,8 +345,8 @@
          <a href="#contact">Contact</a>
       </nav>
 
-      <!-- Dynamic welcome message populated by JavaScript -->
-      <div id="welcome-banner"></div>
+      <!-- Welcome message banner -->
+      <div id="welcome-banner">Welcome to my portfolio!</div>
 
       <!-- About section with dynamically generated skills list -->
       <section id="about">
@@ -342,7 +423,11 @@
             <label for="message">Message</label>
             <textarea id="message" placeholder="Your message here..."></textarea>
 
-            <button type="submit" id="submit-btn">Send Message</button>
+            <!-- Week 4: tooltip wrapper shows a hint on hover over the Submit button -->
+            <div class="tooltip-wrapper">
+               <button type="submit" id="submit-btn">Send Message</button>
+               <span class="tooltip-text">Click to send your message!</span>
+            </div>
 
             <!-- Week 3: status message element updated dynamically on submit -->
             <div id="form-status"></div>
@@ -354,11 +439,10 @@
       </footer>
 
       <script>
-         // Prompt the user for their name and store it in a variable
-         var userName = prompt("What is your name?");
-
-         // Dynamically update the welcome banner at the top of the page
-         document.getElementById("welcome-banner").innerText = "Welcome, " + userName + "!";
+         // Week 4: Close the welcome modal when the Close button is clicked
+         document.getElementById("modal-close-btn").addEventListener("click", function() {
+            document.getElementById("welcome-modal").style.display = "none";
+         });
 
          // Array of skills displayed using a for loop
          var skills = ["HTML", "CSS", "JavaScript", "Python", "Git", "GitHub", "C#"];
@@ -392,7 +476,16 @@
                // Remove dark-mode class when checkbox is unchecked
                document.body.classList.remove("dark-mode");
             }
+            // Week 4: save the user's preference to localStorage so it persists across visits
+            localStorage.setItem("darkModeEnabled", this.checked);
          });
+
+         // Week 4: on page load, check localStorage for a saved dark mode preference
+         // and apply it, making sure the toggle checkbox reflects the saved state
+         if (localStorage.getItem("darkModeEnabled") === "true") {
+            document.body.classList.add("dark-mode");
+            document.getElementById("dark-mode-toggle").checked = true;
+         }
 
          // ---------------------------------------------------------
          // Week 3: Dynamically add a new element to the Projects section
