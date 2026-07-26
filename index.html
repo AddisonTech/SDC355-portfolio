@@ -16,6 +16,11 @@
                   modal that overlays the page on load, added a hover tooltip to
                   the Contact Form's Submit button, and persisted the Dark Mode
                   preference using localStorage so it is remembered across visits.
+                  Final Project update: defined the Projects section as an array
+                  of custom project objects, stored the array in sessionStorage
+                  using JSON.stringify()/JSON.parse(), and dynamically rendered
+                  each project's title, summary, image, and repo link into the
+                  page using a loop and DOM element creation.
       -->
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -146,6 +151,14 @@
             margin: 4px 0 0 0;
             font-size: 0.95em;
             color: #555;
+         }
+         /* Final Project: icon image shown above each dynamically rendered project */
+         .project-icon {
+            width: 80px;
+            display: block;
+            margin-bottom: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
          }
 
          /* Featured Content section */
@@ -358,23 +371,11 @@
          <ul id="skills-list"></ul>
       </section>
 
-      <!-- Projects section with links to three GitHub repos -->
+      <!-- Projects section: list is now rendered dynamically from stored project objects -->
       <section id="projects">
          <h2>Projects</h2>
-         <ul class="project-list">
-            <li>
-               <a href="https://github.com/AddisonTech/Argus" target="_blank">Argus</a>
-               <p>Computer vision project focused on intelligent visual inspection systems.</p>
-            </li>
-            <li>
-               <a href="https://github.com/AddisonTech/Smith_Agentic" target="_blank">Smith_Agentic</a>
-               <p>Agentic AI system built for autonomous task execution and decision-making.</p>
-            </li>
-            <li>
-               <a href="https://github.com/AddisonTech/Vision_Inspect" target="_blank">Vision_Inspect</a>
-               <p>MCP server integration project for real-time visual inspection workflows.</p>
-            </li>
-         </ul>
+         <!-- Final Project: populated by JavaScript from the project objects array -->
+         <ul class="project-list" id="project-list"></ul>
          <!-- Week 3: dynamically created paragraph is appended here by JavaScript -->
       </section>
 
@@ -443,6 +444,74 @@
          document.getElementById("modal-close-btn").addEventListener("click", function() {
             document.getElementById("welcome-modal").style.display = "none";
          });
+
+         // ---------------------------------------------------------
+         // Final Project: Custom project objects, sessionStorage persistence,
+         // and dynamic rendering of the Projects section
+         // ---------------------------------------------------------
+
+         // Define three custom project objects, each with a title, summary,
+         // icon/image URL, and link to the GitHub repository
+         var project1 = {
+            title: "Argus",
+            summary: "Computer vision project focused on intelligent visual inspection systems.",
+            image: "https://opengraph.githubassets.com/1/AddisonTech/Argus",
+            repoLink: "https://github.com/AddisonTech/Argus"
+         };
+         var project2 = {
+            title: "Smith_Agentic",
+            summary: "Agentic AI system built for autonomous task execution and decision-making.",
+            image: "https://opengraph.githubassets.com/1/AddisonTech/Smith_Agentic",
+            repoLink: "https://github.com/AddisonTech/Smith_Agentic"
+         };
+         var project3 = {
+            title: "Vision_Inspect",
+            summary: "MCP server integration project for real-time visual inspection workflows.",
+            image: "https://opengraph.githubassets.com/1/AddisonTech/Vision_Inspect",
+            repoLink: "https://github.com/AddisonTech/Vision_Inspect"
+         };
+
+         // Array containing all of the project objects
+         var projectArray = [project1, project2, project3];
+
+         // Check whether project data already exists in sessionStorage
+         var storedProjects = sessionStorage.getItem("portfolioProjects");
+         var projects;
+
+         if (!storedProjects) {
+            // No data exists yet: convert the array to a string and store it
+            sessionStorage.setItem("portfolioProjects", JSON.stringify(projectArray));
+            projects = projectArray;
+         } else {
+            // Data already exists: parse the stored string back into an array of objects
+            projects = JSON.parse(storedProjects);
+         }
+
+         // Select the Projects section's list using a DOM selector
+         var projectContainer = document.querySelector("#project-list");
+
+         // Loop through the projects array and dynamically build each list item
+         for (var p = 0; p < projects.length; p++) {
+            var projectItem = document.createElement("li");
+
+            var projectImg = document.createElement("img");
+            projectImg.src = projects[p].image;
+            projectImg.alt = projects[p].title;
+            projectImg.className = "project-icon";
+
+            var projectLink = document.createElement("a");
+            projectLink.href = projects[p].repoLink;
+            projectLink.target = "_blank";
+            projectLink.textContent = projects[p].title;
+
+            var projectSummary = document.createElement("p");
+            projectSummary.textContent = projects[p].summary;
+
+            projectItem.appendChild(projectImg);
+            projectItem.appendChild(projectLink);
+            projectItem.appendChild(projectSummary);
+            projectContainer.appendChild(projectItem);
+         }
 
          // Array of skills displayed using a for loop
          var skills = ["HTML", "CSS", "JavaScript", "Python", "Git", "GitHub", "C#"];
